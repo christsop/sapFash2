@@ -1,12 +1,3 @@
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import org.json.*;
@@ -34,14 +25,13 @@ public class Main {
 
         createNewQuestions();
 
-        readQueriesEndExportResults("queries.txt", "answers.txt");
         readQueriesEndExportResults("queries30.txt", "answers30.txt");
         readQueriesEndExportResults("queries60.txt", "answers60.txt");
         readQueriesEndExportResults("queries90.txt", "answers90.txt");
 
     }
 
-    private static void createNewQuestions() throws IOException { // creates 3 new queries.txt
+    private static void createNewQuestions() throws IOException { // creates 3 new txt queries
         List<String> listOfFiles = fileNames();
 
         BufferedWriter bw30 = new BufferedWriter(new FileWriter(new File(questions + "queries30.txt")));
@@ -112,7 +102,7 @@ public class Main {
     };
 
 
-    public static BufferedReader getQuery(String text) throws IOException {
+    public static BufferedReader getQuery(String text) {
 
         try {
 
@@ -186,7 +176,7 @@ public class Main {
         bw.close();
     }
 
-    private static JSONArray getFormattedAnswer(String output) throws IOException{
+    private static JSONArray getFormattedAnswer(String output) {
         String result = new JSONObject(output).get("hits").toString();
         return new JSONObject(result).getJSONArray("hits");
     }
