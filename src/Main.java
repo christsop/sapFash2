@@ -26,29 +26,61 @@ import java.util.Random;
 
 public class Main {
 
-    private static String txtFiles = "/Users/christos/Desktop/fash2/txts/";
+    private static String txtFiles = System.getProperty("user.dir") + "/txts/";
+    private static String questions = System.getProperty("user.dir") + "/questions/";
+    private static String results = System.getProperty("user.dir") + "/results/";
 
-//    private static String documentsPath = System.getProperty("user.dir") + "/documents/";
-//    private static String queriesIn = System.getProperty("user.dir") + "/queries.txt/";
-//    private static String answers = System.getProperty("user.dir") + "/qrels.txt/";
+    public static void main(String[] args) throws IOException {
 
-    public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
+        createNewQuestions();
 
+        readQueriesEndExportResults("queries.txt", "answers.txt");
+        readQueriesEndExportResults("queries30.txt", "answers30.txt");
+        readQueriesEndExportResults("queries60.txt", "answers60.txt");
+        readQueriesEndExportResults("queries90.txt", "answers90.txt");
 
-        File folder = new File(txtFiles);
-        File[] listOfFiles = folder.listFiles();
+    }
 
+    private static void createNewQuestions() throws IOException { // creates 3 new queries.txt
+        List<String> listOfFiles = fileNames();
 
-        int i = 1;
-        for (File file : listOfFiles) {
+        BufferedWriter bw30 = new BufferedWriter(new FileWriter(new File(questions + "queries30.txt")));
+        BufferedWriter bw60 = new BufferedWriter(new FileWriter(new File(questions + "queries60.txt")));
+        BufferedWriter bw90 = new BufferedWriter(new FileWriter(new File(questions + "queries90.txt")));
+
+        int questionIndex = 0;
+        for (String fileName : listOfFiles) {
+            File file = new File(fileName);
             String thirty = getPhrase(30, file);
             String sixty = getPhrase(60, file);
             String ninety = getPhrase(90, file);
-            System.out.println("" + (100*i++)/18316 + "% parsed");
+
+            questionIndex++;
+            bw30.write("Q" + questionIndex + " " +thirty + "\n");
+            bw60.write("Q" + questionIndex + " " +sixty + "\n");
+            bw90.write("Q" + questionIndex + " " +ninety + "\n");
         }
 
-//        readQueriesEndExportResults();
+        bw30.close();
+        bw60.close();
+        bw90.close();
+    }
 
+    private static List<String> fileNames(){
+        List<String> listOfFiles = new ArrayList<>();
+
+        listOfFiles.add(txtFiles.concat("193378.txt"));
+        listOfFiles.add(txtFiles.concat("213164.txt"));
+        listOfFiles.add(txtFiles.concat("204146.txt"));
+        listOfFiles.add(txtFiles.concat("214253.txt"));
+        listOfFiles.add(txtFiles.concat("212490.txt"));
+        listOfFiles.add(txtFiles.concat("210133.txt"));
+        listOfFiles.add(txtFiles.concat("213097.txt"));
+        listOfFiles.add(txtFiles.concat("193715.txt"));
+        listOfFiles.add(txtFiles.concat("197346.txt"));
+        listOfFiles.add(txtFiles.concat("199879.txt"));
+
+        return listOfFiles;
     }
 
     private static String getPhrase(int percentage, File file) throws IOException {
@@ -127,12 +159,12 @@ public class Main {
         return null;
     }
 
-    private static void readQueriesEndExportResults() throws IOException {
+    private static void readQueriesEndExportResults(String queryFileName, String resultFileName) throws IOException {
 
-        File file = new File("/Users/christos/Downloads/fash1/queries.txt");
+        File file = new File(questions + queryFileName);
 
         BufferedReader br = new BufferedReader(new FileReader(file));
-        BufferedWriter bw = new BufferedWriter(new FileWriter(new File("/Users/christos/Desktop/answers.txt")));
+        BufferedWriter bw = new BufferedWriter(new FileWriter(new File(results + resultFileName)));
 
         String question;
         while ((question = br.readLine()) != null) {
