@@ -12,7 +12,6 @@ import java.io.*;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 
 public class Main {
@@ -75,7 +74,6 @@ public class Main {
 
     private static String getPhrase(int percentage, File file) throws IOException {
         Scanner scanner = new Scanner(file);
-        Random rand = new Random();
 
         int totalPhrases = 0;
         String phrase = "";
@@ -88,14 +86,13 @@ public class Main {
         }
         int totalPhrasesToReturn = (totalPhrases*percentage)/100;
 
+        int index = 0;
         while(totalPhrasesToReturn > 0){
-            int randomIndexOfList = rand.nextInt(totalPhrases);
 
-            phrase = phrase.concat(phrasesList.get(randomIndexOfList) + " ");
-            phrasesList.remove(randomIndexOfList);
-
+            phrase = phrase.concat(phrasesList.get(index) + " ");
             totalPhrasesToReturn--;
             totalPhrases--;
+            index++;
         }
 
         return phrase;
